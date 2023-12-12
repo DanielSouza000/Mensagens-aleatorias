@@ -1,0 +1,5 @@
+*Requisitos*
+
+Instale python e lembre-se de selecionar a opção para adicionar o python no PATH
+Após a instalação do python abra o cmd e escreva este comando para instalar o mysql-connector:
+py -m pip install mysql-connector-python

@@ -1,5 +1,6 @@
 import mysql.connector
 import random
+import os
 
 mydb = mysql.connector.connect(
   host="sql10.freemysqlhosting.net",
@@ -28,6 +29,8 @@ def enviar():
     mydb.commit()
 
     print("Sua mensagem foi enviada")
+    check = input("Pressione Enter para continuar")
+    check = ""
 
 def ver():
   mycursor.execute("SELECT Name, Message FROM Messages")
@@ -40,9 +43,13 @@ def ver():
   men_aleatorio = myresult[random_int][1]
 
   print("\"",men_aleatorio,"\"\n","-",nome_aleatorio,"\n")
+  check = input("Pressione Enter para continuar")
+  check = ""
 
 
 while True:
+  os.system('cls')
+  
   opção = input("Digite o número 1 para enviar uma mensagem\nDigite o número 2 para ver uma mensagem aleatória\nDigite o número 3 para sair do programa\n")
 
   if opção.strip() == "1":

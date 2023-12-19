@@ -20,8 +20,8 @@ def enviar():
   if nome.strip() == "" or mensagem.strip() == "":
     check = input("Você não escreveu um nome ou uma mensagem.")
     check = ""
-  elif len(nome) > 25 or len(mensagem) > 100:
-    check = input("O nome excedeu o limite (25), ou a mensagem excedeu o limite (100)")
+  elif len(nome) > 40 or len(mensagem) > 200:
+    check = input("O nome excedeu o limite (40), ou a mensagem excedeu o limite (200)")
     check = ""
   else:
     mycursor.execute(sql, val)

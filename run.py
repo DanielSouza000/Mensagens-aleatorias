@@ -1,51 +1,47 @@
-import mysql.connector
 import random
 import os
+import pymysql
+import pymysql.cursors
 
-mydb = mysql.connector.connect(
-  host="sql10.freemysqlhosting.net",
-  user="sql10665476",
-  password="nGBLE49Flp",
-  database="sql10665476"
+timeout = 10
+connection = pymysql.connect(
+    charset="utf8mb4",
+    connect_timeout=timeout,
+    cursorclass=pymysql.cursors.DictCursor,
+    db="mensagensaleatorias",
+    host="mysql-1b8e19e2-mensagensaleatorias.d.aivencloud.com",
+    password="xVN<znE38HR9]-MJsrBU(W",
+    read_timeout=timeout,
+    port=13649,
+    user="newuser",
+    write_timeout=timeout,
 )
-mycursor = mydb.cursor()
-
 def enviar():
-  sql = "INSERT INTO Messages (Name, Message) VALUES (%s, %s)"
-  nome = input("Escreva seu nome: ")
-  mensagem = input("Escreva sua mensagem: ")
-  val = (nome, mensagem)
-
-
-  if nome.strip() == "" or mensagem.strip() == "":
-    check = input("Você não escreveu um nome ou uma mensagem.")
-    check = ""
-  elif len(nome) > 40 or len(mensagem) > 200:
-    check = input("O nome excedeu o limite (40), ou a mensagem excedeu o limite (200)")
-    check = ""
-  else:
-    mycursor.execute(sql, val)
-
-    mydb.commit()
-
-    print("Sua mensagem foi enviada")
-    check = input("Pressione Enter para continuar")
-    check = ""
+    with connection:
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO `mensagens` (`nome`, `mensagem`) VALUES (%s, %s)"
+            nome = input("Escreva seu nome: ")
+            mensagem = input("Escreva sua mensagem: ")
+            val = (nome, mensagem)
+            if nome.strip() == "" or mensagem.strip() == "":
+                check = input("Você não escreveu um nome ou uma mensagem.")
+                check = ""
+            elif len(nome) > 40 or len(mensagem) > 200:
+                check = input("O nome excedeu o limite (40), ou a mensagem excedeu o limite (200)")
+                check = ""
+            else:
+                cursor.execute(sql, val)
+                connection.commit()
 
 def ver():
-  mycursor.execute("SELECT Name, Message FROM Messages")
-
-  myresult = mycursor.fetchall()
-
-  random_int = random.randint(0, len(myresult)-1)
-
-  nome_aleatorio = myresult[random_int][0]
-  men_aleatorio = myresult[random_int][1]
-
-  print("\"",men_aleatorio,"\"\n","-",nome_aleatorio,"\n")
-  check = input("Pressione Enter para continuar")
-  check = ""
-
+    with connection.cursor() as cursor:
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT nome, mensagem FROM mensagens")
+        myresult = cursor.fetchall()
+        random_int = random.randint(0, len(myresult)-1)
+        print("\"",myresult[random_int]["nome"],"\"\n","-",myresult[random_int]["mensagem"],"\n")
+        check = input("Pressione Enter para continuar")
+        check = ""
 
 while True:
   os.system('cls')
@@ -58,4 +54,3 @@ while True:
     ver()
   elif opção.strip() == "3":
     break
-
